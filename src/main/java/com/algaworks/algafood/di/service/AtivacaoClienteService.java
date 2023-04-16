@@ -1,11 +1,8 @@
 package com.algaworks.algafood.di.service;
 
-import org.springframework.stereotype.Component;
-
 import com.algaworks.algafood.di.notificacao.Notificador;
 import com.algaworks.algafood.modelo.Cliente;
 
-@Component
 public class AtivacaoClienteService {
 
 	public AtivacaoClienteService(Notificador notificador) {
