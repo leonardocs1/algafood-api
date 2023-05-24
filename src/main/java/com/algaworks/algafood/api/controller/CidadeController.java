@@ -15,13 +15,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.algaworks.algafood.domain.exception.EntidadeNaoEncontradaException;
+import com.algaworks.algafood.domain.exception.NegocioException;
 import com.algaworks.algafood.domain.model.Cidade;
 import com.algaworks.algafood.domain.repository.CidadeRepository;
 import com.algaworks.algafood.domain.service.CadastroCidadeService;
 
 @RestController
 @RequestMapping("/cidades")
-public class CidadesController {
+public class CidadeController {
 
 	@Autowired
 	private CidadeRepository cidadeRepository;
@@ -42,7 +44,11 @@ public class CidadesController {
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public Cidade adicionar(@RequestBody Cidade cidade) {
-		return cadastroCidade.salvar(cidade);
+		try {
+			return cadastroCidade.salvar(cidade);
+		} catch (EntidadeNaoEncontradaException e) {
+			throw new NegocioException(e.getMessage());
+		}
 	}
 
 	@PutMapping("/{cidadeId}")
@@ -52,7 +58,11 @@ public class CidadesController {
 
 		BeanUtils.copyProperties(cidade, cidadeAtual, "id");
 
-		return cadastroCidade.salvar(cidadeAtual);
+		try {
+			return cadastroCidade.salvar(cidadeAtual);
+		} catch (EntidadeNaoEncontradaException e) {
+			throw new NegocioException(e.getMessage());
+		}
 	}
 
 	@DeleteMapping("/{cidadeId}")
