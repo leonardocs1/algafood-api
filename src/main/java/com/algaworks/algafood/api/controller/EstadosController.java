@@ -48,7 +48,7 @@ public class EstadosController {
 	}
 
 	@PutMapping("/{estadoId}")
-	public Estado atualizar(@PathVariable Long estadoId, @RequestBody Estado estado) {
+	public Estado atualizar(@PathVariable Long estadoId, @Valid @RequestBody Estado estado) {
 		Estado estadoAtual = cadastroEstado.buscarOuFalhar(estadoId);
 
 		BeanUtils.copyProperties(estado, estadoAtual, "id");
