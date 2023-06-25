@@ -40,8 +40,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @RequestMapping("/restaurantes")
 public class RestauranteController {
 
-	private static final String RestauranteAtual = null;
-
 	@Autowired
 	private RestauranteRepository restauranteRepository;
 
@@ -100,19 +98,18 @@ public class RestauranteController {
 		Restaurante restauranteAtual = cadastroRestaurante.buscarOuFalhar(restauranteId);
 
 		merge(campos, restauranteAtual, request);
-		validate(RestauranteAtual, "restaurante");
+		validate(restauranteAtual, "restaurante");
 
 		return atualizar(restauranteId, restauranteAtual);
 	}
 
-	private void validate(String restaurante, String objectName) {
+	private void validate(Restaurante restaurante, String objectName) {
 		BeanPropertyBindingResult bindingResult = new BeanPropertyBindingResult(restaurante, objectName);
 		validator.validate(restaurante, bindingResult);
 
 		if (bindingResult.hasErrors()) {
 			throw new ValidacaoException(bindingResult);
 		}
-
 	}
 
 	private void merge(Map<String, Object> camposOrigem, Restaurante restauranteDestino, HttpServletRequest request) {
