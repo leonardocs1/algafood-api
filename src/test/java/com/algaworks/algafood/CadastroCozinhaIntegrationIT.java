@@ -1,6 +1,7 @@
 package com.algaworks.algafood;
 
 import static io.restassured.RestAssured.given;
+import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -50,12 +51,19 @@ class CadastroCozinhaIntegrationIT {
 	@Test
 	public void deveConter2Cozinhas_QuandoConsultarCozinhas() {
 
-		given()
-		.accept(ContentType.JSON)
-	.when()
-		.get()
-	.then()
-		.body("", hasSize(2));
+		given().accept(ContentType.JSON).when().get().then().body("", hasSize(2));
+	}
+
+	@Test
+	public void deveRetornarRespostaEStatusCorretos_QuandoConsultarCozinhaExistentes() {
+		given().pathParam("cozinhaId", 2).accept(ContentType.JSON).when().get("/{cozinhaId}").then().statusCode(HttpStatus.OK.value())
+				.body("nome", equalTo("Americana"));
+	}
+	
+	@Test
+	public void deveRetornarRespostaEStatus404_QuandoConsultarCozinhaInexistente() {
+		given().pathParam("cozinhaId", 100).accept(ContentType.JSON).when().get("/{cozinhaId}").then().statusCode(HttpStatus.NOT_FOUND.value());
+				
 	}
 
 	@Test
