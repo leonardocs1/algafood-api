@@ -52,7 +52,8 @@ public class EstadosController {
 
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public EstadoModel adicionar(@RequestBody @Valid Estado estado) {
+	public EstadoModel adicionar(@RequestBody @Valid EstadoInput estadoInput) {
+		Estado estado = estadoInputDisassembler.toDomainObject(estadoInput);
 		return estadoModelAssembler.toModel(cadastroEstado.salvar(estado));
 	}
 
