@@ -39,18 +39,6 @@ public class CadastroUsuarioService {
 	}
 
 	@Transactional
-	public void excluir(Long usuarioId) {
-		try {
-			usuarioRepository.deleteById(usuarioId);
-			usuarioRepository.flush();
-		} catch (EmptyResultDataAccessException e) {
-			throw new UsuarioNaoEncontradoException(usuarioId);
-		} catch (DataIntegrityViolationException e) {
-			throw new EntidadeEmUsoException(String.format(MSG_USUARIO_EM_USO, usuarioId));
-		}
-	}
-
-	@Transactional
 	public void alterarSenha(Long usuarioId, String senhaAtual, String novaSenha) {
 
 		Usuario usuario = buscarOuFalhar(usuarioId);
