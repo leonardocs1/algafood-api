@@ -73,7 +73,10 @@ insert into grupo (nome) values ('Gerente'), ('Vendedor'), ('Secretária'), ('Ca
 insert into usuario(nome, email, senha, data_cadastro) values ('João da Silva', 'joao@email.com', '1234', utc_timestamp);
 insert into usuario(nome, email, senha, data_cadastro) values ('Maria da Silva', 'maria@email.com', '1234', utc_timestamp);
 insert into usuario(nome, email, senha, data_cadastro) values ('Leonardo Santos', 'leonardo@email.com', '1234', utc_timestamp);
+insert into usuario (id, nome, email, senha, data_cadastro) values (5, 'Manoel Lima', 'manoel.loja@gmail.com', '123', utc_timestamp);
 
 insert into grupo_permissao (grupo_id, permissao_id) values (1, 1), (1, 2), (1, 3), (1, 4), (2, 1), (2, 2), (3, 1);
 
 insert into usuario_grupo (usuario_id, grupo_id) values (1, 1), (1, 2), (2, 2);
+
+insert into restaurante_usuario_responsavel (restaurante_id, usuario_id) values (1, 5), (3, 5); 
