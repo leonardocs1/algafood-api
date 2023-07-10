@@ -18,7 +18,7 @@ import com.algaworks.algafood.domain.model.Grupo;
 import com.algaworks.algafood.domain.service.CadastroGrupoService;
 
 @RestController
-@RequestMapping(value = "/grupo/{grupoId}/permissoes")
+@RequestMapping(value = "/grupos/{grupoId}/permissoes")
 public class GrupoPermissaoController {
 
 	@Autowired
@@ -36,13 +36,13 @@ public class GrupoPermissaoController {
 	@PutMapping("/{permissaoId}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void associar(@PathVariable Long grupoId, @PathVariable Long permissaoId) {
-		cadastroGrupo.associarFormaPagamento(grupoId, permissaoId);
+		cadastroGrupo.associarPermissao(grupoId, permissaoId);
 	}
 
 	@DeleteMapping("/{permissaoId}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void dessasociar(@PathVariable Long grupoId, @PathVariable Long permissaoId) {
-		cadastroGrupo.desassociarFormaPagamento(grupoId, permissaoId);
+		cadastroGrupo.desassociarPermissao(grupoId, permissaoId);
 	}
 
 }
