@@ -1,0 +1,1 @@
+alter table pedido add taxa_frete decimal(10, 2) not null;
