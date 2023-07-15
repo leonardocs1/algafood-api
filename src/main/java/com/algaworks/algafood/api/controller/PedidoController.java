@@ -53,9 +53,9 @@ public class PedidoController {
 		return pedidoResumoModelAssembler.toCollectionModel(todosPedidos);
 	}
 
-	@GetMapping("/{pedidoId}")
-	public PedidoModel buscar(@PathVariable Long pedidoId) {
-		Pedido pedido = emissaoPedido.buscarOuFalhar(pedidoId);
+	@GetMapping("/{codigoPedido}")
+	public PedidoModel buscar(@PathVariable String codigoPedido) {
+		Pedido pedido = emissaoPedido.buscarOuFalhar(codigoPedido);
 
 		return pedidoModelAssembler.toModel(pedido);
 	}
@@ -63,19 +63,19 @@ public class PedidoController {
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public PedidoModel adicionar(@Valid @RequestBody PedidoInput pedidoInput) {
-	    try {
-	        Pedido novoPedido = pedidoInputDisassembler.toDomainObject(pedidoInput);
+		try {
+			Pedido novoPedido = pedidoInputDisassembler.toDomainObject(pedidoInput);
 
-	        // TODO pegar usuário autenticado
-	        novoPedido.setCliente(new Usuario());
-	        novoPedido.getCliente().setId(1L);
+			// TODO pegar usuário autenticado
+			novoPedido.setCliente(new Usuario());
+			novoPedido.getCliente().setId(1L);
 
-	        novoPedido = emissaoPedido.emitir(novoPedido);
+			novoPedido = emissaoPedido.emitir(novoPedido);
 
-	        return pedidoModelAssembler.toModel(novoPedido);
-	    } catch (EntidadeNaoEncontradaException e) {
-	        throw new NegocioException(e.getMessage(), e);
-	    }
+			return pedidoModelAssembler.toModel(novoPedido);
+		} catch (EntidadeNaoEncontradaException e) {
+			throw new NegocioException(e.getMessage(), e);
+		}
 	}
 
 }
