@@ -53,7 +53,7 @@ public class PedidoController {
 	private PedidoInputDisassembler pedidoInputDisassembler;
 
 	@GetMapping
-	public Page<PedidoResumoModel> pesquisar(PedidoFilter filtro, @PageableDefault() Pageable pageable) {
+	public Page<PedidoResumoModel> pesquisar(PedidoFilter filtro, @PageableDefault(size = 10) Pageable pageable) {
 		Page<Pedido> pedidosPage = pedidoRepository.findAll(PedidoSpecs.usandoFiltro(filtro), pageable);
 
 		List<PedidoResumoModel> pedidosResumoModel = pedidoResumoModelAssembler
