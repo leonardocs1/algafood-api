@@ -10,7 +10,7 @@ import lombok.Setter;
 
 @Setter
 @Getter
-public class vendaDiariaFilter {
+public class VendaDiariaFilter {
 
 	private Long restauranteId;
 	
