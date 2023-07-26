@@ -1,4 +1,4 @@
-package com.algaworks.algafood.api.model;
+package com.algaworks.algafood.domain.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -6,8 +6,6 @@ import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
-
-import com.algaworks.algafood.domain.model.Produto;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
