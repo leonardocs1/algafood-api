@@ -12,13 +12,14 @@ import com.algaworks.algafood.domain.service.FotoStorageService;
 @Service
 public class LocalFotoStorageService implements FotoStorageService {
 
-	@Value("algafood.storage.local.diretorio-fotos")
+	@Value("${algafood.storage.local.diretorio-fotos}")
 	private Path diretorioFotos;
 
 	@Override
 	public void armazenar(NovaFoto novaFoto) {
 		try {
 			Path arquivoPath = getArquivoPath(novaFoto.getNomeArquivo());
+			System.out.println(diretorioFotos.resolve("/"));
 
 			FileCopyUtils.copy(novaFoto.getInputStream(), Files.newOutputStream(arquivoPath));
 		} catch (Exception e) {
