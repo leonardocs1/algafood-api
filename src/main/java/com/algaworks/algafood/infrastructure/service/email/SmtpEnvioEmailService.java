@@ -26,9 +26,11 @@ public class SmtpEnvioEmailService implements EnvioEmailService {
 
 			MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "UTF-8");
 			helper.setFrom(emailProperties.getRemetente());
-			helper.setTo(mensagem.getDestinatario().toArray(new String[0]));
+			helper.setTo(mensagem.getDestinatarios().toArray(new String[0]));
 			helper.setSubject(mensagem.getAssunto());
 			helper.setText(mensagem.getCorpo(), true);	
+			
+			mailSender.send(mimeMessage);
 			
 		} catch (Exception e) {
 			throw new EmailException("Não foi possível enviar e-mail.", e);
