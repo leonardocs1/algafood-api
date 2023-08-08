@@ -1,6 +1,5 @@
 package com.algaworks.algafood.core.openapi;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -10,15 +9,20 @@ import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 
+import com.algaworks.algafood.api.exceptionhandler.Problem;
+import com.fasterxml.classmate.TypeResolver;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+
 import springfox.bean.validators.configuration.BeanValidatorPluginsConfiguration;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.RequestHandlerSelectors;
+import springfox.documentation.builders.ResponseBuilder;
 import springfox.documentation.service.ApiInfo;
 import springfox.documentation.service.Contact;
-import springfox.documentation.builders.ResponseBuilder;
 import springfox.documentation.service.Response;
 import springfox.documentation.service.Tag;
 import springfox.documentation.spi.DocumentationType;
+import springfox.documentation.spring.web.json.JacksonModuleRegistrar;
 import springfox.documentation.spring.web.plugins.Docket;
 
 @Configuration
@@ -27,6 +31,9 @@ public class SpringFoxConfig {
 
 	@Bean
 	public Docket apiDocket() {
+		
+		var typeResolver = new TypeResolver(); 
+		
 		return new Docket(DocumentationType.OAS_30)
 				.select()
 				.apis(RequestHandlerSelectors.basePackage("com.algaworks.algafood.api"))
@@ -36,6 +43,7 @@ public class SpringFoxConfig {
 			.globalResponses(HttpMethod.POST, globalPostResponseMessages())
 			.globalResponses(HttpMethod.PUT, globalPutResponseMessages())
 			.globalResponses(HttpMethod.DELETE, globalDeleteMessages())
+			.additionalModels(typeResolver.resolve(Problem.class))
 			.apiInfo(apiInfo())
 			.tags(new Tag("Cidades", "Gerencia as cidades"));
 	}
@@ -114,6 +122,11 @@ public class SpringFoxConfig {
 				.version("1")
 				.contact(new Contact("AlgaWorks", "https://www.algaworks.com", "contato@algaworks.com"))
 				.build();
+	}
+	
+	@Bean
+	public JacksonModuleRegistrar stringFoxJacksonConfig() {
+		return objectMapper -> objectMapper.registerModule(new JavaTimeModule());
 	}
 
 }
