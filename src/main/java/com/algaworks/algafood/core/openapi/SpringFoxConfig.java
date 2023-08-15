@@ -1,6 +1,7 @@
 package com.algaworks.algafood.core.openapi;
 
 import java.io.File;
+import java.io.InputStream;
 import java.net.URI;
 import java.net.URL;
 import java.net.URLStreamHandler;
@@ -62,7 +63,8 @@ public class SpringFoxConfig {
 			.globalResponses(HttpMethod.DELETE, globalDeleteMessages())
 			.additionalModels(typeResolver.resolve(Problem.class))
 			.ignoredParameterTypes(ServletWebRequest.class, 
-					URL.class, URI.class, URLStreamHandler.class, Resource.class, File.class)
+					URL.class, URI.class, URLStreamHandler.class, 
+					Resource.class, File.class, InputStream.class)
 			.directModelSubstitute(Pageable.class, PageableModelOpenApi.class)
 			.alternateTypeRules(AlternateTypeRules.newRule(
 					typeResolver.resolve(Page.class, CozinhaModel.class),
