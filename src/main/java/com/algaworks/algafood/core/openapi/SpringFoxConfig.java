@@ -83,7 +83,8 @@ public class SpringFoxConfig {
 			.tags(new Tag("Restaurantes", "Gerencia os restaurantes"))
 			.tags(new Tag("Estados", "Gerencia os estados"))
 			.tags(new Tag("Produtos", "Gerencia dos produtos de restaurantes"))
-			.tags(new Tag("Usuarios", "Gerencia os usuários"));
+			.tags(new Tag("Usuarios", "Gerencia os usuários"))
+			.tags(new Tag("Estatísticas", "Estatísticas"));
 	}
 	
 	private List<Response> globalGetResponseMessages() {
