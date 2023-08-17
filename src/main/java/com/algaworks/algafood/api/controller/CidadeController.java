@@ -1,10 +1,5 @@
 package com.algaworks.algafood.api.controller;
 
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
-
-import java.util.List;
-
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,21 +46,8 @@ public class CidadeController implements CidadeControllerOpenApi {
 
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public CollectionModel<CidadeModel> listar() {
-		List<CidadeModel> cidadesModel = cidadeModelAssembler.toCollectionModel(cidadeRepository.findAll());
 		
-		cidadesModel.forEach(cidadeModel -> {
-			cidadeModel.add(linkTo(methodOn(CidadeController.class).buscar(cidadeModel.getId())).withSelfRel());
-
-			cidadeModel.add(linkTo(methodOn(CidadeController.class).listar()).withRel("cidades"));
-
-			cidadeModel.add(linkTo(methodOn(EstadoController.class).buscar(cidadeModel.getEstado().getId())).withSelfRel());
-		});
-		
-		CollectionModel<CidadeModel> cidadesCollectionModel = CollectionModel.of(cidadesModel);
-		
-		cidadesCollectionModel.add(linkTo(CidadeController.class).withSelfRel());
-		
-		return cidadesCollectionModel;
+		return cidadeModelAssembler.toCollectionModel(cidadeRepository.findAll());
 	}
 
 	@GetMapping(path = "/{cidadeId}", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -73,15 +55,7 @@ public class CidadeController implements CidadeControllerOpenApi {
 
 		Cidade cidade = cadastroCidade.buscarOuFalhar(cidadeId);
 
-		CidadeModel cidadeModel = cidadeModelAssembler.toModel(cidade);
-
-		cidadeModel.add(linkTo(methodOn(CidadeController.class).buscar(cidadeModel.getId())).withSelfRel());
-
-		cidadeModel.add(linkTo(methodOn(CidadeController.class).listar()).withRel("cidades"));
-
-		cidadeModel.add(linkTo(methodOn(EstadoController.class).buscar(cidadeModel.getEstado().getId())).withSelfRel());
-
-		return cidadeModel;
+		return cidadeModelAssembler.toModel(cidade);
 	}
 
 	@PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
