@@ -11,7 +11,7 @@ import lombok.Setter;
 
 @Setter
 @Getter
-public class RestauranteModel {
+public class RestauranteModel  {
 
 	@ApiModelProperty(example = "1")
 	@JsonView({ RestauranteView.Resumo.class, RestauranteView.ApenasNome.class })
