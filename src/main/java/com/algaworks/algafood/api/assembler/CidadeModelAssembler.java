@@ -1,7 +1,6 @@
 package com.algaworks.algafood.api.assembler;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,17 +8,20 @@ import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
 import org.springframework.stereotype.Component;
 
+import com.algaworks.algafood.api.AlgaLinks;
 import com.algaworks.algafood.api.controller.CidadeController;
-import com.algaworks.algafood.api.controller.EstadoController;
 import com.algaworks.algafood.api.model.CidadeModel;
 import com.algaworks.algafood.domain.model.Cidade;
 
 @Component
 public class CidadeModelAssembler extends RepresentationModelAssemblerSupport<Cidade, CidadeModel> {
-	
+
 	@Autowired
 	private ModelMapper modelMapper;
-	
+
+	@Autowired
+	private AlgaLinks algaLinks;
+
 	public CidadeModelAssembler() {
 		super(CidadeController.class, CidadeModel.class);
 	}
@@ -27,19 +29,17 @@ public class CidadeModelAssembler extends RepresentationModelAssemblerSupport<Ci
 	@Override
 	public CidadeModel toModel(Cidade cidade) {
 		CidadeModel cidadeModel = createModelWithId(cidade.getId(), cidade);
-		
 		modelMapper.map(cidade, cidadeModel);
 		
-		cidadeModel.add(linkTo(methodOn(CidadeController.class).listar()).withRel("cidades"));
+		cidadeModel.add(algaLinks.linkToCidades("cidades"));
 
-		cidadeModel.add(linkTo(methodOn(EstadoController.class).buscar(cidadeModel.getEstado().getId())).withSelfRel());
+		cidadeModel.add(algaLinks.linkToEstado(cidade.getEstado().getId()));
 		
 		return cidadeModel;
 	}
-	
+
 	@Override
 	public CollectionModel<CidadeModel> toCollectionModel(Iterable<? extends Cidade> entities) {
-		return super.toCollectionModel(entities)
-				.add(linkTo(CidadeController.class).withSelfRel());
+		return super.toCollectionModel(entities).add(linkTo(CidadeController.class).withSelfRel());
 	}
 }
