@@ -47,11 +47,11 @@ public class AlgaLinks {
 	public Link linkToConfirmacaoPedido(String codigoPedido, String rel) {
 		return linkTo(methodOn(FluxoPedidoController.class).confirmar(codigoPedido)).withRel(rel);
 	}
-	
+
 	public Link linkToEntregaPedido(String codigoPedido, String rel) {
 		return linkTo(methodOn(FluxoPedidoController.class).entregar(codigoPedido)).withRel(rel);
 	}
-	
+
 	public Link linkToCancelamentoPedido(String codigoPedido, String rel) {
 		return linkTo(methodOn(FluxoPedidoController.class).cancelar(codigoPedido)).withRel(rel);
 	}
@@ -63,23 +63,35 @@ public class AlgaLinks {
 	public Link linkToRestaurante(Long restauranteId) {
 		return linkToRestaurante(restauranteId, IanaLinkRelations.SELF.value());
 	}
-	
+
 	public Link linkToRestaurantes(String rel) {
 		return linkTo(RestauranteController.class).withRel(rel);
 	}
-	
+
 	public Link linkToRestaurantes() {
 		return linkToRestaurantes(IanaLinkRelations.SELF_VALUE);
+	}
+
+	public Link linkToRestauranteAbrir(Long restauranteId, String rel) {
+		return linkTo(methodOn(RestauranteController.class).abrir(restauranteId)).withRel(rel);
+	}
+	
+	public Link linkToRestauranteFechar(Long restauranteId, String rel) {
+		return linkTo(methodOn(RestauranteController.class).fechar(restauranteId)).withRel(rel);
+	}
+	
+	public Link linkToRestauranteAtivar(Long restauranteId, String rel) {
+		return linkTo(methodOn(RestauranteController.class).ativar(restauranteId)).withRel(rel);
 	}
 
 	public Link linkToPedidos(String rel) {
 		return linkTo(PedidoController.class).withRel(rel);
 	}
-	
+
 	public Link linkToCozinha(Long cozinhaId, String rel) {
 		return linkTo(methodOn(CozinhaController.class).buscar(cozinhaId)).withRel(rel);
 	}
-	
+
 	public Link linkToCozinha(Long cozinhaId) {
 		return linkToCozinha(cozinhaId, IanaLinkRelations.SELF_VALUE);
 	}
@@ -95,7 +107,7 @@ public class AlgaLinks {
 	public Link linkToFormaPagamento(Long formaPagamentoId) {
 		return linkToFormaPagamento(formaPagamentoId, IanaLinkRelations.SELF_VALUE);
 	}
-	
+
 	public Link linkToRestauranteFormasPagamento(Long restauranteId, String rel) {
 		return linkTo(methodOn(RestauranteFormaPagamentoController.class).listar(restauranteId)).withRel(rel);
 	}
