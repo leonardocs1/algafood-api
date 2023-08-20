@@ -11,8 +11,12 @@ import com.algaworks.algafood.api.model.PedidoResumoModel;
 import com.algaworks.algafood.domain.model.Pedido;
 
 @Component
-public class PedidoResumoModelAssembler extends RepresentationModelAssemblerSupport<Pedido, PedidoResumoModel> {
-	
+public class PedidoResumoModelAssembler
+		extends RepresentationModelAssemblerSupport<Pedido, PedidoResumoModel> {
+
+	@Autowired
+	private ModelMapper modelMapper;
+
 	@Autowired
 	private AlgaLinks algaLinks;
 
@@ -20,22 +24,19 @@ public class PedidoResumoModelAssembler extends RepresentationModelAssemblerSupp
 		super(PedidoController.class, PedidoResumoModel.class);
 	}
 
-	@Autowired
-	private ModelMapper modelMapper;
-
+	@Override
 	public PedidoResumoModel toModel(Pedido pedido) {
+		PedidoResumoModel pedidoModel = createModelWithId(pedido.getCodigo(), pedido);
+		modelMapper.map(pedido, pedidoModel);
 
-		PedidoResumoModel pedidoResumoModel = createModelWithId(pedido.getCodigo(), pedido);
-		modelMapper.map(pedido, pedidoResumoModel);
+		pedidoModel.add(algaLinks.linkToPedidos());
 
-		pedidoResumoModel.add(algaLinks.linkToPedidos("pedidos"));
+		pedidoModel.getRestaurante().add(
+				algaLinks.linkToRestaurante(pedido.getRestaurante().getId()));
 
-		pedidoResumoModel.getRestaurante()
-				.add(algaLinks.linkToRestaurante(pedido.getRestaurante().getId()));
+		pedidoModel.getCliente().add(algaLinks.linkToUsuario(pedido.getCliente().getId()));
 
-		pedidoResumoModel.getCliente().add(algaLinks.linkToUsuario(pedido.getCliente().getId()));
-
-		return pedidoResumoModel;
+		return pedidoModel;
 	}
 
 }
