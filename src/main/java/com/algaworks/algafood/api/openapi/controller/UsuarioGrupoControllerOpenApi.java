@@ -1,6 +1,7 @@
 package com.algaworks.algafood.api.openapi.controller;
 
 import org.springframework.hateoas.CollectionModel;
+import org.springframework.http.ResponseEntity;
 
 import com.algaworks.algafood.api.exceptionhandler.Problem;
 import com.algaworks.algafood.api.model.GrupoModel;
@@ -25,7 +26,7 @@ public interface UsuarioGrupoControllerOpenApi {
 		@ApiResponse(code = 204, message = "Associação realizada com sucesso"),
 		@ApiResponse(code = 404, message = "Usuário ou grupo não encontrada", response = Problem.class)
 	})
-	void associar(@ApiParam(value = "ID do usuário", example = "1", required = true) Long usuarioId,
+	ResponseEntity<Void> associar(@ApiParam(value = "ID do usuário", example = "1", required = true) Long usuarioId,
 			@ApiParam(value = "ID do grupo", example = "1", required = true) Long grupoId);
 	
 	@ApiOperation("Desassociação de grupo a um usuário")
@@ -33,7 +34,7 @@ public interface UsuarioGrupoControllerOpenApi {
 		@ApiResponse(code = 204, message = "Desassociação realizada com sucesso"),
 		@ApiResponse(code = 404, message = "Usuário ou grupo não encontrada", response = Problem.class)
 	})
-	void desassociar(@ApiParam(value = "ID do usuário", example = "1", required = true) Long usuarioId,
+	ResponseEntity<Void> desassociar(@ApiParam(value = "ID do usuário", example = "1", required = true) Long usuarioId,
 			@ApiParam(value = "ID do grupo", example = "1", required = true) Long grupoId);
 	
 }
