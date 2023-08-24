@@ -13,7 +13,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.core.io.Resource;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.Links;
@@ -106,7 +105,7 @@ public class SpringFoxConfig {
 					PermissoesModelOpenApi.class
 					))
 			.alternateTypeRules(AlternateTypeRules.newRule(
-					typeResolver.resolve(Page.class, PedidoResumoModel.class),
+					typeResolver.resolve(PagedModel.class, PedidoResumoModel.class),
 					PedidosResumoModelOpenApi.class
 					))
 			.apiInfo(apiInfo())
