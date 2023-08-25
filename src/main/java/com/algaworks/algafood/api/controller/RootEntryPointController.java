@@ -21,6 +21,7 @@ public class RootEntryPointController {
 		var rootEntryPointModel = new RootEntryPointModel();
 		
 		rootEntryPointModel.add(algaLinks.linkToCozinhas("cozinhas"));
+		rootEntryPointModel.add(algaLinks.linkToCozinhas("gastronomias"));
 		rootEntryPointModel.add(algaLinks.linkToPedidos("pedidos"));
 		rootEntryPointModel.add(algaLinks.linkToRestaurantes("restaurantes"));
 		rootEntryPointModel.add(algaLinks.linkToGrupos("grupos"));
