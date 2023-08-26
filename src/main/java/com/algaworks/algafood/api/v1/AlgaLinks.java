@@ -181,7 +181,7 @@ public class AlgaLinks {
 	}
 
 	public Link linkToCidades() {
-		return linkTo(CidadeController.class).withRel(IanaLinkRelations.SELF_VALUE);
+		return linkToCidades(IanaLinkRelations.SELF_VALUE);
 	}
 
 	public Link linkToProduto(Long restauranteId, Long produtoId, String rel) {

@@ -31,7 +31,7 @@ public class CidadeModelAssembler extends RepresentationModelAssemblerSupport<Ci
 		
 		cidadeModel.add(algaLinks.linkToCidades("cidades"));
 
-		cidadeModel.add(algaLinks.linkToEstado(cidade.getEstado().getId()));
+		cidadeModel.getEstado().add(algaLinks.linkToEstado(cidade.getEstado().getId()));
 		
 		return cidadeModel;
 	}
