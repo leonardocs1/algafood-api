@@ -44,6 +44,7 @@ public class CidadeController implements CidadeControllerOpenApi {
 	@Autowired
 	CidadeInputDisassembler cidadeInputDisassembler;
 
+	@Deprecated
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public CollectionModel<CidadeModel> listar() {
 
