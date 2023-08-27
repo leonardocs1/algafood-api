@@ -50,6 +50,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import springfox.bean.validators.configuration.BeanValidatorPluginsConfiguration;
 import springfox.documentation.builders.ApiInfoBuilder;
+import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RepresentationBuilder;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.builders.ResponseBuilder;
@@ -67,13 +68,15 @@ import springfox.documentation.spring.web.plugins.Docket;
 public class SpringFoxConfig {
 
 	@Bean
-	public Docket apiDocket() {
+	public Docket apiDocketV1() {
 		
 		var typeResolver = new TypeResolver(); 
 		
 		return new Docket(DocumentationType.OAS_30)
+				.groupName("V1")
 				.select()
 				.apis(RequestHandlerSelectors.basePackage("com.algaworks.algafood.api"))
+				.paths(PathSelectors.ant("/v1/**"))
 				.build()
 			.useDefaultResponseMessages(false)
 			.globalResponses(HttpMethod.GET, globalGetResponseMessages())
@@ -126,7 +129,7 @@ public class SpringFoxConfig {
 					typeResolver.resolve(CollectionModel.class, UsuarioModel.class),
 					UsuariosModelOpenApi.class
 					))
-			.apiInfo(apiInfo())
+			.apiInfo(apiInfoV1())
 			.tags(new Tag("Cidades", "Gerencia as cidades"))
 			.tags(new Tag("Grupos", "Gerencia os grupos de usuários"))
 			.tags(new Tag("Cozinhas", "Gerencia as cozinhas"))
@@ -138,6 +141,32 @@ public class SpringFoxConfig {
 			.tags(new Tag("Usuarios", "Gerencia os usuários"))
 			.tags(new Tag("Estatísticas", "Estatísticas"))
 			.tags(new Tag("Permissões", "Gerencia as permissões"));
+	}
+	
+	@Bean
+	public Docket apiDocketV2() {
+		
+		var typeResolver = new TypeResolver(); 
+		
+		return new Docket(DocumentationType.OAS_30)
+				.groupName("V2")
+				.select()
+				.apis(RequestHandlerSelectors.basePackage("com.algaworks.algafood.api"))
+				.paths(PathSelectors.ant("/v2/**"))
+				.build()
+			.useDefaultResponseMessages(false)
+			.globalResponses(HttpMethod.GET, globalGetResponseMessages())
+			.globalResponses(HttpMethod.POST, globalPostResponseMessages())
+			.globalResponses(HttpMethod.PUT, globalPutResponseMessages())
+			.globalResponses(HttpMethod.DELETE, globalDeleteMessages())
+			.additionalModels(typeResolver.resolve(Problem.class))
+			.ignoredParameterTypes(ServletWebRequest.class, 
+					URL.class, URI.class, URLStreamHandler.class, 
+					Resource.class, File.class, InputStream.class)
+			.directModelSubstitute(Pageable.class, PageableModelOpenApi.class)
+			.directModelSubstitute(Links.class, LinksModelOpenApi.class)
+			
+			.apiInfo(apiInfoV2());
 	}
 	
 	private List<Response> globalGetResponseMessages() {
@@ -225,11 +254,20 @@ public class SpringFoxConfig {
 				);
 	}
 	
-	private ApiInfo apiInfo() {
+	private ApiInfo apiInfoV1() {
 		return new ApiInfoBuilder()
 				.title("AlgaFood API")
 				.description("API aberta para clientes e restaurantes")
 				.version("1")
+				.contact(new Contact("AlgaWorks", "https://www.algaworks.com", "contato@algaworks.com"))
+				.build();
+	}
+	
+	private ApiInfo apiInfoV2() {
+		return new ApiInfoBuilder()
+				.title("AlgaFood API")
+				.description("API aberta para clientes e restaurantes")
+				.version("2")
 				.contact(new Contact("AlgaWorks", "https://www.algaworks.com", "contato@algaworks.com"))
 				.build();
 	}
