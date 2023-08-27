@@ -12,7 +12,7 @@ import com.algaworks.algafood.api.v1.openapi.controller.PermissaoControllerOpenA
 import com.algaworks.algafood.domain.repository.PermissaoRepository;
 
 @RestController
-@RequestMapping(value = "/permissoes")
+@RequestMapping(value = "/v1/permissoes")
 public class PermissaoController implements PermissaoControllerOpenApi {
 
 	@Autowired
