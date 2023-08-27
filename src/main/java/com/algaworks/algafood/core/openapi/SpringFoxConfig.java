@@ -45,6 +45,10 @@ import com.algaworks.algafood.api.v1.openapi.model.PermissoesModelOpenApi;
 import com.algaworks.algafood.api.v1.openapi.model.ProdutosModelOpenApi;
 import com.algaworks.algafood.api.v1.openapi.model.RestaurantesModelOpenApi;
 import com.algaworks.algafood.api.v1.openapi.model.UsuariosModelOpenApi;
+import com.algaworks.algafood.api.v2.model.CidadeModelV2;
+import com.algaworks.algafood.api.v2.model.CozinhaModelV2;
+import com.algaworks.algafood.api.v2.openapi.model.CidadesModelOpenApiV2;
+import com.algaworks.algafood.api.v2.openapi.model.CozinhasModelOpenApiV2;
 import com.fasterxml.classmate.TypeResolver;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
@@ -160,13 +164,24 @@ public class SpringFoxConfig {
 			.globalResponses(HttpMethod.PUT, globalPutResponseMessages())
 			.globalResponses(HttpMethod.DELETE, globalDeleteMessages())
 			.additionalModels(typeResolver.resolve(Problem.class))
+			.alternateTypeRules(AlternateTypeRules.newRule(
+					typeResolver.resolve(CollectionModel.class, CidadeModelV2.class),
+					CidadesModelOpenApiV2.class
+					))
+			.alternateTypeRules(AlternateTypeRules.newRule(
+					typeResolver.resolve(PagedModel.class, CozinhaModelV2.class),
+					CozinhasModelOpenApiV2.class
+					))
+			
 			.ignoredParameterTypes(ServletWebRequest.class, 
 					URL.class, URI.class, URLStreamHandler.class, 
 					Resource.class, File.class, InputStream.class)
 			.directModelSubstitute(Pageable.class, PageableModelOpenApi.class)
 			.directModelSubstitute(Links.class, LinksModelOpenApi.class)
 			
-			.apiInfo(apiInfoV2());
+			.apiInfo(apiInfoV2())
+			.tags(new Tag("Cidades", "Gerencia as cidades"))
+			.tags(new Tag("Cozinhas", "Gerencia as cozinhas"));
 	}
 	
 	private List<Response> globalGetResponseMessages() {
