@@ -21,6 +21,7 @@ import com.algaworks.algafood.api.v1.model.input.SenhaInput;
 import com.algaworks.algafood.api.v1.model.input.UsuarioComSenhaInput;
 import com.algaworks.algafood.api.v1.model.input.UsuarioInput;
 import com.algaworks.algafood.api.v1.openapi.controller.UsuarioControllerOpenApi;
+import com.algaworks.algafood.core.security.CheckSecurity;
 import com.algaworks.algafood.domain.model.Usuario;
 import com.algaworks.algafood.domain.repository.UsuarioRepository;
 import com.algaworks.algafood.domain.service.CadastroUsuarioService;
@@ -41,16 +42,19 @@ public class UsuarioController implements UsuarioControllerOpenApi {
 	@Autowired
 	private UsuarioInputDisassembler usuarioInputDisassembler;
 
+	@CheckSecurity.UsuariosGruposPermissoes.PodeConsultar
 	@GetMapping
 	public CollectionModel<UsuarioModel> listar() {
 		return usuarioModelAssembler.toCollectionModel(usuarioRepository.findAll());
 	}
 
+	@CheckSecurity.UsuariosGruposPermissoes.PodeConsultar
 	@GetMapping("/{usuarioId}")
 	public UsuarioModel buscar(@PathVariable Long usuarioId) {
 		return usuarioModelAssembler.toModel(cadastroUsuario.buscarOuFalhar(usuarioId));
 	}
 
+	
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public UsuarioModel adicionar(@RequestBody @Valid UsuarioComSenhaInput usuarioInput) {
@@ -58,6 +62,7 @@ public class UsuarioController implements UsuarioControllerOpenApi {
 		return usuarioModelAssembler.toModel(cadastroUsuario.salvar(usuario));
 	}
 
+	@CheckSecurity.UsuariosGruposPermissoes.PodeAlterarUsuario
 	@PutMapping("/{usuarioId}")
 	public UsuarioModel atualizar(@PathVariable Long usuarioId, @Valid @RequestBody UsuarioInput usuarioInput) {
 		Usuario usuarioAtual = cadastroUsuario.buscarOuFalhar(usuarioId);
@@ -67,6 +72,7 @@ public class UsuarioController implements UsuarioControllerOpenApi {
 		return usuarioModelAssembler.toModel(cadastroUsuario.salvar(usuarioAtual));
 	}
 	
+	@CheckSecurity.UsuariosGruposPermissoes.PodeAlterarPropriaSenha
 	@PutMapping("/{usuarioId}/senha")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void atualizarSenha(@PathVariable Long usuarioId, @Valid @RequestBody SenhaInput senhaInput) {
