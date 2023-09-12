@@ -19,7 +19,7 @@ public class PermissaoModelAssembler extends RepresentationModelAssemblerSupport
 	
 	@Autowired
 	private AlgaLinks algaLinks;
-
+	
 	public PermissaoModelAssembler() {
 		super(PermissaoController.class, PermissaoModel.class);
 	}
