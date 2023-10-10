@@ -77,4 +77,10 @@ public class EstadoController implements EstadoControllerOpenApi {
 	public void remover(@PathVariable Long estadoId) {
 		cadastroEstado.excluir(estadoId);
 	}
+
+	@Override
+	public EstadoModel atualizar(EstadoInput estadoInput) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
