@@ -47,28 +47,23 @@ public class SpringDocConfig {
 	private static final String internalServerErrorResponse = "InternalServerErrorResponse";
 
 
-    @Bean
-    public OpenAPI openAPI() {
-        return new OpenAPI()
-                .info(new Info()
-                        .title("AlgaFood API")
-                        .version("v1")
-                        .description("REST API do AlgaFood")
-                        .license(new License()
-                                .name("Apache 2.0")
-                                .url("http://springdoc.com")
-                        )
-                ).externalDocs(new ExternalDocumentation()
-                        .description("AlgaWorks")
-                        .url("https://algaworks.com")
-                ).tags(Arrays.asList(
-                	new Tag().name("Cidades").description("Gerencia as cidades")	
-                		)).components(new Components()
-                				.schemas(gerarSchemas())
-                				.responses(gerarReponses())
-                				
-               );
-    }
+	@Bean
+	public OpenAPI openAPI() {
+		return new OpenAPI()
+						.info(new Info()
+								.title("AlgaFood API")
+								.version("v1")
+								.description("REST API do AlgaFood")
+								.license(new License().name("Apache 2.0").url("http://springdoc.com")))
+						.externalDocs(new ExternalDocumentation()
+								.description("AlgaWorks")
+								.url("https://algaworks.com"))
+						.tags(Arrays.asList(
+								new Tag().name("Cidades").description("Gerencia as cidades"),
+								new Tag().name("Grupos").description("Gerencia os grupos")))
+						.components(new Components().schemas(gerarSchemas()).responses(gerarReponses()
+					));
+	}
 
 	@Bean
     public OpenApiCustomiser openApiCustomiser() {
@@ -129,7 +124,7 @@ public class SpringDocConfig {
     	
     	apiResponseMap.put(badRequestResponse, new ApiResponse().description("Requisição inválida").content(content));
     	apiResponseMap.put(notFoundResponse, new ApiResponse().description("Recurso não encontrado").content(content));
-    	apiResponseMap.put(badRequestResponse, new ApiResponse().description("Recurso não possui representação que poderia ser aceita pelo consumidor").content(content));
+    	apiResponseMap.put(notAcceptableResponse, new ApiResponse().description("Recurso não possui representação que poderia ser aceita pelo consumidor").content(content));
 		apiResponseMap.put(internalServerErrorResponse, new ApiResponse().description("Erro interno do servidor").content(content));
     	
     	return apiResponseMap;
