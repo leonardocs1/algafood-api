@@ -10,15 +10,20 @@ import com.algaworks.algafood.api.v1.model.FotoProdutoInput;
 import com.algaworks.algafood.api.v1.model.FotoProdutoModel;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 
 @SecurityRequirement(name = "security_auth")
 public interface RestauranteProdutoFotoControllerOpenApi {
 
-	FotoProdutoModel atualizarFoto(Long restauranteId, Long produtoId, FotoProdutoInput fotoProdutoInput,
+	@Operation(summary = "Atualiza a foto do produto de um restaurante")
+	FotoProdutoModel atualizarFoto(@Parameter(description = "ID de um restaurante", example = "1", required = true) Long restauranteId, 
+								   @Parameter(description = "ID de um produto", example = "2", required = true) Long produtoId, 
+								   @RequestBody(required = true) FotoProdutoInput fotoProdutoInput,
 			MultipartFile arquivo) throws IOException;
 
 	public void remover(Long restauranteId, Long produtoId);
