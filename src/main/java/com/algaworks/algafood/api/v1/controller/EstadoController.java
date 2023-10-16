@@ -78,9 +78,4 @@ public class EstadoController implements EstadoControllerOpenApi {
 		cadastroEstado.excluir(estadoId);
 	}
 
-	@Override
-	public EstadoModel atualizar(EstadoInput estadoInput) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 }
