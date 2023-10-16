@@ -104,9 +104,4 @@ public class RestauranteProdutoController implements ProdutosControllerOpenApi {
 		return produtoModelAssembler.toModel(produtoAtual);
 	}
 
-	@Override
-	public ProdutoModel atualizar(Long restauranteId, ProdutoInput produtoInput) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 }
