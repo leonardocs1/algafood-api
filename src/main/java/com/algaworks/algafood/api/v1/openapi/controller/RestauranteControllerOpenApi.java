@@ -14,11 +14,13 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 @SecurityRequirement(name = "security_auth")
+@Tag(name = "Restaurantes")
 public interface RestauranteControllerOpenApi {
 
-	@Operation(parameters = {
+	@Operation(summary = "Lista os restaurantes", parameters = {
 			@Parameter(name = "projecao",
 					   description = "Nome da projeção",
 					   example = "apenas-nome",
@@ -31,21 +33,31 @@ public interface RestauranteControllerOpenApi {
 	@Operation(hidden = true)
 	CollectionModel<RestauranteApenasNomeModel> listarApenasNome();
 
-	RestauranteModel buscar(Long restauranteId);
+	@Operation(summary = "Busca um restaurante por ID")
+	RestauranteModel buscar(@Parameter(description = "ID de um restaurante", example = "1", required = true) Long restauranteId);
 
-	RestauranteModel adicionar(RestauranteInput restauranteInput);
+	@Operation(summary = "Adiciona um restaurante")
+	RestauranteModel adicionar(@Parameter(description = "Representação de um restaurante", required = true) RestauranteInput restauranteInput);
 
-	RestauranteModel atualizar(Long restauranteId, RestauranteInput restauranteInput);
+	@Operation(summary = "Atualiza um restaurante por ID")
+	RestauranteModel atualizar(@Parameter(description = "ID de um restaurante", example = "1", required = true) Long restauranteId, 
+			@Parameter(description = "Representação de um restaurante com os dados", required = true) RestauranteInput restauranteInput);
 
-	ResponseEntity<Void> ativar(Long restauranteId);
+	@Operation(summary = "Ativa um restaurante por ID")
+	ResponseEntity<Void> ativar(@Parameter(description = "ID de um restaurante", example = "1", required = true) Long restauranteId);
 
-	ResponseEntity<Void> inativar(Long restauranteId);
+	@Operation(summary = "Inativa um restaurante por ID")
+	ResponseEntity<Void> inativar(@Parameter(description = "ID de um restaurante", example = "1", required = true) Long restauranteId);
 
-	void ativarMultiplos(List<Long> restaurantesIds);
+	@Operation(summary = "Ativa múltiplos resturantes")
+	void ativarMultiplos(@Parameter(description = "IDs de restaurantes") List<Long> restaurantesIds);
 
-	void inativarMultiplos(List<Long> restaurantesIds);
+	@Operation(summary = "Inativa múltiplos restaurantes")
+	void inativarMultiplos(@Parameter(description = "IDs de restaurantes") List<Long> restaurantesIds);
 
-	ResponseEntity<Void> abrir(Long restauranteId);
+	@Operation(summary = "Abre um restaurante por ID")
+	ResponseEntity<Void> abrir(@Parameter(description = "ID de um restaurante", example = "1", required = true) Long restauranteId);
 
-	ResponseEntity<Void> fechar(Long restauranteId);
+	@Operation(summary = "Fecha um restaurante por ID")
+	ResponseEntity<Void> fechar(@Parameter(description = "ID de um restaurante", example = "1", required = true) Long restauranteId);
 }
