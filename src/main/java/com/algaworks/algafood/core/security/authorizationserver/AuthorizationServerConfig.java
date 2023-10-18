@@ -1,10 +1,10 @@
 package com.algaworks.algafood.core.security.authorizationserver;
 
-import java.io.InputStream;
-import java.security.KeyStore;
-import java.time.Duration;
-import java.util.Arrays;
-
+import com.nimbusds.jose.jwk.JWKSet;
+import com.nimbusds.jose.jwk.RSAKey;
+import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
+import com.nimbusds.jose.jwk.source.JWKSource;
+import com.nimbusds.jose.proc.SecurityContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
@@ -28,11 +28,10 @@ import org.springframework.security.oauth2.server.authorization.config.ProviderS
 import org.springframework.security.oauth2.server.authorization.config.TokenSettings;
 import org.springframework.security.web.SecurityFilterChain;
 
-import com.nimbusds.jose.jwk.JWKSet;
-import com.nimbusds.jose.jwk.RSAKey;
-import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
-import com.nimbusds.jose.jwk.source.JWKSource;
-import com.nimbusds.jose.proc.SecurityContext;
+import java.io.InputStream;
+import java.security.KeyStore;
+import java.time.Duration;
+import java.util.Arrays;
 
 @Configuration
 public class AuthorizationServerConfig {
@@ -59,52 +58,32 @@ public class AuthorizationServerConfig {
 				.tokenSettings(TokenSettings.builder().accessTokenFormat(OAuth2TokenFormat.SELF_CONTAINED)
 						.accessTokenTimeToLive(Duration.ofMinutes(30)).build())
 				.build();
-		
-		RegisteredClient algafoodweb = RegisteredClient
-				.withId("2")
-				.clientId("algafood-web")
-				.clientSecret(passwordEncoder.encode("web123"))
-				.clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
-				.authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
-				.scope("READ")
-				.scope("WRITE")
-				.tokenSettings(TokenSettings.builder()
-						.accessTokenFormat(OAuth2TokenFormat.SELF_CONTAINED)
-						.accessTokenTimeToLive(Duration.ofMinutes(15))
-						.build())
-				.redirectUri("http://localhost:8080/authorized")
-				.redirectUri("http://localhost:8080/swagger-ui/oauth2-redirect.html")
-				.clientSettings(ClientSettings.builder()
-						.requireAuthorizationConsent(true)
-						.build())
-				.build();
-		
-		RegisteredClient foodanalytics = RegisteredClient
-				.withId("3")
-				.clientId("foodanalytics")
-				.clientSecret(passwordEncoder.encode("web123"))
-				.clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
-				.authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
-				.scope("READ")
-				.scope("WRITE")
-				.tokenSettings(TokenSettings.builder()
-						.accessTokenFormat(OAuth2TokenFormat.SELF_CONTAINED)
-						.accessTokenTimeToLive(Duration.ofMinutes(30))
-						.build())
-				.redirectUri("http://www.foodanalytics.local:8082")
-				.clientSettings(ClientSettings.builder()
-						.requireAuthorizationConsent(false)
-						.build())
-				.build();
-						
 
-		return new InMemoryRegisteredClientRepository(Arrays.asList(algafoodbackend, algafoodweb, foodanalytics));
+		RegisteredClient algafoodWeb = RegisteredClient.withId("2").clientId("algafood-web")
+				.clientSecret(passwordEncoder.encode("web123"))
+				.clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
+				.authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE).scope("READ").scope("WRITE")
+				.tokenSettings(TokenSettings.builder().accessTokenFormat(OAuth2TokenFormat.SELF_CONTAINED)
+						.accessTokenTimeToLive(Duration.ofMinutes(15)).build())
+				.redirectUri("http://127.0.0.1:8080/authorized")
+				.redirectUri("http://127.0.0.1:8080/swagger-ui/oauth2-redirect.html")
+				.clientSettings(ClientSettings.builder().requireAuthorizationConsent(true).build()).build();
+
+		RegisteredClient foodanalytics = RegisteredClient.withId("3").clientId("foodanalytics")
+				.clientSecret(passwordEncoder.encode("web123"))
+				.clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
+				.authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE).scope("READ").scope("WRITE")
+				.tokenSettings(TokenSettings.builder().accessTokenFormat(OAuth2TokenFormat.SELF_CONTAINED)
+						.accessTokenTimeToLive(Duration.ofMinutes(30)).build())
+				.redirectUri("http://www.foodanalytics.local:8082")
+				.clientSettings(ClientSettings.builder().requireAuthorizationConsent(false).build()).build();
+
+		return new InMemoryRegisteredClientRepository(Arrays.asList(algafoodbackend, algafoodWeb, foodanalytics));
 	}
 
 	@Bean
 	public OAuth2AuthorizationService oAuth2AuthorizationService(JdbcOperations jdbcOperations,
 			RegisteredClientRepository registeredClientRepository) {
-
 		return new JdbcOAuth2AuthorizationService(jdbcOperations, registeredClientRepository);
 	}
 
