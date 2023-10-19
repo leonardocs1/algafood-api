@@ -32,7 +32,7 @@ public class ResourceServerConfig {
 	            .oauth2ResourceServer()
 	            .jwt().jwtAuthenticationConverter(jwtAutheticationConverter());
 
-	        return http.formLogin(Customizer.withDefaults()).build();
+	        return http.formLogin(customizer -> customizer.loginPage("/login")).build();
 	    }
 	 
 	 private JwtAuthenticationConverter jwtAutheticationConverter() {
