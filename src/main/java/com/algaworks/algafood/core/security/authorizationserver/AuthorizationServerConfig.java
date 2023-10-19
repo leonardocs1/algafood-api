@@ -51,32 +51,51 @@ public class AuthorizationServerConfig {
 	@Bean
 	public RegisteredClientRepository registeredClientRepository(PasswordEncoder passwordEncoder) {
 
-		RegisteredClient algafoodbackend = RegisteredClient.withId("1").clientId("algafood-backend")
-				.clientSecret(passwordEncoder.encode("backend123"))
-				.clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
-				.authorizationGrantType(AuthorizationGrantType.CLIENT_CREDENTIALS).scope("READ")
-				.tokenSettings(TokenSettings.builder().accessTokenFormat(OAuth2TokenFormat.SELF_CONTAINED)
-						.accessTokenTimeToLive(Duration.ofMinutes(30)).build())
+		RegisteredClient algafoodbackend = RegisteredClient
+					.withId("1")
+					.clientId("algafood-backend")
+					.clientSecret(passwordEncoder.encode("backend123"))
+					.clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
+					.authorizationGrantType(AuthorizationGrantType.CLIENT_CREDENTIALS)
+					.scope("READ")
+					.tokenSettings(TokenSettings.builder().accessTokenFormat(OAuth2TokenFormat.SELF_CONTAINED)
+					.accessTokenTimeToLive(Duration.ofMinutes(30))
+					.build())
 				.build();
 
-		RegisteredClient algafoodWeb = RegisteredClient.withId("2").clientId("algafood-web")
-				.clientSecret(passwordEncoder.encode("web123"))
-				.clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
-				.authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE).scope("READ").scope("WRITE")
-				.tokenSettings(TokenSettings.builder().accessTokenFormat(OAuth2TokenFormat.SELF_CONTAINED)
-						.accessTokenTimeToLive(Duration.ofMinutes(15)).build())
-				.redirectUri("http://127.0.0.1:8080/authorized")
-				.redirectUri("http://127.0.0.1:8080/swagger-ui/oauth2-redirect.html")
-				.clientSettings(ClientSettings.builder().requireAuthorizationConsent(true).build()).build();
+		RegisteredClient algafoodWeb = RegisteredClient
+					.withId("2")
+					.clientId("algafood-web")
+					.clientSecret(passwordEncoder.encode("web123"))
+					.clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
+					.authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
+					.authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
+					.scope("READ")
+					.scope("WRITE")
+					.tokenSettings(TokenSettings.builder().accessTokenFormat(OAuth2TokenFormat.SELF_CONTAINED)
+					.accessTokenTimeToLive(Duration.ofMinutes(15))
+					.reuseRefreshTokens(false)
+					.refreshTokenTimeToLive(Duration.ofDays(1))
+					.build())
+					.redirectUri("http://127.0.0.1:8080/authorized")
+					.redirectUri("http://127.0.0.1:8080/swagger-ui/oauth2-redirect.html")
+					.clientSettings(ClientSettings.builder().requireAuthorizationConsent(true)
+					.build())
+				.build();
 
 		RegisteredClient foodanalytics = RegisteredClient.withId("3").clientId("foodanalytics")
-				.clientSecret(passwordEncoder.encode("web123"))
-				.clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
-				.authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE).scope("READ").scope("WRITE")
-				.tokenSettings(TokenSettings.builder().accessTokenFormat(OAuth2TokenFormat.SELF_CONTAINED)
-						.accessTokenTimeToLive(Duration.ofMinutes(30)).build())
-				.redirectUri("http://www.foodanalytics.local:8082")
-				.clientSettings(ClientSettings.builder().requireAuthorizationConsent(false).build()).build();
+					.clientSecret(passwordEncoder.encode("web123"))
+					.clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
+					.authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
+					.scope("READ")
+					.scope("WRITE")
+					.tokenSettings(TokenSettings.builder().accessTokenFormat(OAuth2TokenFormat.SELF_CONTAINED)
+					.accessTokenTimeToLive(Duration.ofMinutes(30))
+					.build())
+					.redirectUri("http://www.foodanalytics.local:8082")
+					.clientSettings(ClientSettings.builder().requireAuthorizationConsent(false)
+					.build())
+				.build();
 
 		return new InMemoryRegisteredClientRepository(Arrays.asList(algafoodbackend, algafoodWeb, foodanalytics));
 	}
